@@ -99,7 +99,7 @@ final class RegistryTests: XCTestCase {
         do {
             let retrieved: TestClass = try sut.resolve()
             XCTAssertNil(retrieved)
-        } catch let error {
+        } catch {
             if let error = error as? ResolvingError {
                 if case .instanceNotAvailable = error {
                     XCTAssert(true)
@@ -118,7 +118,7 @@ final class RegistryTests: XCTestCase {
         do {
             let retrieved: UnassociatedTestClass = try sut.resolve(customName: "testClass")
             XCTAssertNil(retrieved)
-        } catch let error {
+        } catch {
             if let error = error as? ResolvingError {
                 if case .typeMismatch = error {
                     XCTAssert(true)

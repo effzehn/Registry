@@ -13,7 +13,7 @@ final class Injected<T> {
     private let customName: String?
 
     init(type: T.Type = T.self,
-         container: DependencyContainer = StandardDependencyContainer.default,
+         container: any DependencyContainer = StandardDependencyContainer.default,
          name: String? = nil)
     {
         self.container = container
