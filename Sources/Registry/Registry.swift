@@ -1,3 +1,8 @@
+//
+//  DependencyContainer.swift
+//  Copyright 2024 Andre Hoffmann
+//
+
 import Foundation
 
 // MARK: - Convenience Property Wrapper
@@ -7,12 +12,13 @@ import Foundation
 ///     @Injected private var foo: Bar
 ///
 /// will look up the instance for `Bar` with the `StandardDependencyContainer` singleton.
-final class Injected<T> {
+@propertyWrapper
+public final class Injected<T> {
 
     private let container: DependencyContainer
     private let customName: String?
 
-    init(type: T.Type = T.self,
+    public init(type: T.Type = T.self,
          container: any DependencyContainer = StandardDependencyContainer.default,
          name: String? = nil)
     {
@@ -28,7 +34,7 @@ final class Injected<T> {
         }
     }()
 
-    var wrappedValue: T {
+    public var wrappedValue: T {
         _wrappedValue
     }
 }

@@ -1,6 +1,6 @@
 //
 //  DependencyContainer.swift
-//  Created by Andre Hoffmann on 03.09.24.
+//  Copyright 2024 Andre Hoffmann
 //
 
 import Foundation
