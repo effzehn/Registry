@@ -4,22 +4,23 @@
 //
 
 import Foundation
+import SwiftUI
 
-// MARK: - Convenience Property Wrapper
+// MARK: - Property Wrapper
 
 /// A property wrapper that allows the implicit resolution of dependencies in the type header.
 ///
 ///     @Injected private var foo: Bar
 ///
-/// will look up the instance for `Bar` with the `StandardDependencyContainer` singleton.
+/// will look up the instance for `Bar` with the `DependencyContainer.standard` singleton.
 @propertyWrapper
 public final class Injected<T> {
 
-    private let container: DependencyContainer
+    private let container: DependencyContainerProtocol
     private let customName: String?
 
     public init(type: T.Type = T.self,
-         container: any DependencyContainer = StandardDependencyContainer.default,
+         container: any DependencyContainerProtocol = DependencyContainer.standard,
          name: String? = nil)
     {
         self.container = container
@@ -40,11 +41,11 @@ public final class Injected<T> {
 }
 
 
-/// A standard implementation of the `DependencyContainer` protocol. This container would serve most purposes for dependency injection. It is considered to be a
+/// A default implementation of the `DependencyContainer` protocol. This container would serve most purposes for dependency injection. It is considered to be a
 /// Singleton to provide unambigous access to the underlying dependencies.
-public final class StandardDependencyContainer: DependencyContainer, CustomStringConvertible {
+public final class DependencyContainer: DependencyContainerProtocol, CustomStringConvertible {
 
-    public static var `default` = StandardDependencyContainer()
+    public static var standard = DependencyContainer()
 
     private var builders = [String: () throws -> Any]()
     private var instances = [String: Any]()
@@ -80,7 +81,7 @@ public final class StandardDependencyContainer: DependencyContainer, CustomStrin
 
 // Provides an individual instance of a dependency for each resolution. This is useful when there should be multiple instances of an injected
 // type. This is equivalent to e.g. providing an in-place initialized value as a default value in initializer injection.
-public final class RebuildingDependencyContainer: DependencyContainer {
+public final class RebuildingDependencyContainer: DependencyContainerProtocol {
 
     private var builders = [String: () throws -> Any]()
 

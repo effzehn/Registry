@@ -8,12 +8,12 @@ final class RegistryTests: XCTestCase {
     private final class TestClass: TestClassParent {}
     private final class UnassociatedTestClass {}
 
-    var sut: StandardDependencyContainer!
+    var sut: DependencyContainerProtocol!
 
     override func setUp() {
         super.setUp()
 
-        sut = StandardDependencyContainer()
+        sut = DependencyContainer()
     }
 
     func testSetSubscriptAndClear() {
@@ -120,7 +120,7 @@ final class RegistryTests: XCTestCase {
             XCTAssertNil(retrieved)
         } catch {
             if let error = error as? ResolvingError {
-                if case .typeMismatch = error {
+                if case .typeMismatchOrOther = error {
                     XCTAssert(true)
                 } else {
                     XCTFail()

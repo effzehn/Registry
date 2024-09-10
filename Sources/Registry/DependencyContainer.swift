@@ -6,11 +6,11 @@
 import Foundation
 
 /// A collection where dependencies can be added, retrieved, or deleted from. The protocol only describes the required interface to an underlying collection.
-/// It is the responsibility of the implementation to provide and manage the underlying collection. It is recommended to start off with the `StandardDependencyContainer`
+/// It is the responsibility of the implementation to provide and manage the underlying collection. It is recommended to start off with the `DependencyContainer`
 /// implementation and only implement this protocol if necessary for custom behavior.
-public protocol DependencyContainer {
+public protocol DependencyContainerProtocol {
 
-    /// Access dependencies via subscripting the container instance, e.g. `StandardDependencyContainer.default[MyInstance.registryKey]`.
+    /// Access dependencies via subscripting the container instance, e.g. `DependencyContainer.standard[MyInstance.registryKey]`.
     subscript(key: String) -> Any? { get }
 
     /// Returns an array of all currently registered keys. This is mostly useful for debugging purposes.
@@ -33,19 +33,23 @@ public protocol DependencyContainer {
     /// There was no instance found with the provided or inferred key.
     case instanceNotAvailable(String)
     /// The type that is expected does not match the inferred type, or another error.
-    case typeMismatch
+    case typeMismatchOrOther
+    /// The SwiftUI modifier failed ot resolve the dependency.
+    case modifierError
 
     var localizedDescription: String? {
         switch self {
         case .instanceNotAvailable(let key):
             return "Instance with key \(key) not found."
-        case .typeMismatch:
+        case .typeMismatchOrOther:
             return "Type mismatch or other error."
+        case .modifierError:
+            return "SwiftUI modifier failed to resolve, concrete error should follow."
         }
     }
 }
 
-public extension DependencyContainer {
+public extension DependencyContainerProtocol {
 
     /// Registers a dependency. Registration in this context is the process of setting a dependency builder for a specific or inferred key.
     /// - Parameters:
@@ -65,7 +69,7 @@ public extension DependencyContainer {
     ///
     /// When no `customName` is provided, the key will be inferred from the type in which the instance with type T is referenced with, e.g.:
     ///
-    ///     let foo: Bar = try StandardDependencyContainer.default.resolve()
+    ///     let foo: Bar = try DependencyContainer.default.resolve()
     ///
     /// When using this approach you should handle errors and resolve the dependency in a do/catch block. Using `try?` will result in a type mismatch when Swift tries
     /// to infer the type – the type will be wrapped in a Swift Optional Wrapper and the key will differ from the one the user of the API would expect. Force trying
@@ -85,7 +89,7 @@ public extension DependencyContainer {
             return instance
         }
 
-        throw ResolvingError.typeMismatch
+        throw ResolvingError.typeMismatchOrOther
     }
 
     private func keyFrom(_ theType: Any) -> String {
