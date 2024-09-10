@@ -6,40 +6,6 @@
 import Foundation
 import SwiftUI
 
-// MARK: - Property Wrapper
-
-/// A property wrapper that allows the implicit resolution of dependencies in the type header.
-///
-///     @Injected private var foo: Bar
-///
-/// will look up the instance for `Bar` with the `DependencyContainer.standard` singleton.
-@propertyWrapper
-public final class Injected<T> {
-
-    private let container: DependencyContainerProtocol
-    private let customName: String?
-
-    public init(type: T.Type = T.self,
-         container: any DependencyContainerProtocol = DependencyContainer.standard,
-         name: String? = nil)
-    {
-        self.container = container
-        self.customName = name
-    }
-
-    private lazy var _wrappedValue: T = {
-        do {
-            return try container.resolve(customName: customName)
-        } catch {
-            preconditionFailure(error.localizedDescription)
-        }
-    }()
-
-    public var wrappedValue: T {
-        _wrappedValue
-    }
-}
-
 
 /// A default implementation of the `DependencyContainer` protocol. This container would serve most purposes for dependency injection. It is considered to be a
 /// Singleton to provide unambigous access to the underlying dependencies.

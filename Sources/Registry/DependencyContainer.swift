@@ -76,7 +76,7 @@ public extension DependencyContainerProtocol {
     /// (`try!`) would also solve this issue but force unwrapping is considered an unsafe practice.
     ///
     /// - Parameters:
-    ///     - customName: the optional key to identify the dependency.
+    ///     - customName: The optional key to identify the dependency.
     func resolve<T>(customName: String? = nil) throws -> T
     {
         let key = customName ?? keyFrom(T.self)
