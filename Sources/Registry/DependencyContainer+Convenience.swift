@@ -1,8 +1,6 @@
 //
-//  File.swift
-//  
-//
-//  Created by Developer on 10.09.24.
+//  DependencyContainer+Convenience.swift
+//  Copyright 2024 Andre Hoffmann
 //
 
 import Foundation
