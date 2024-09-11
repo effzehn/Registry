@@ -93,6 +93,21 @@ public extension DependencyContainerProtocol {
     }
 
     private func keyFrom(_ theType: Any) -> String {
-        String(describing: type(of: theType))
+        if let optional = theType as? any OptionalProtocol.Type {
+            return String(describing: type(of: optional.wrappedType))
+        }
+
+        return String(describing: type(of: theType))
+    }
+}
+
+/// Helper protocol to extract the underlying type if the inferred type is optional
+protocol OptionalProtocol {
+    static var wrappedType: Any.Type { get }
+}
+
+extension Optional: OptionalProtocol {
+    static var wrappedType: Any.Type {
+        return Wrapped.self
     }
 }

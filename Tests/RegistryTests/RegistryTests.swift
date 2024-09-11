@@ -69,9 +69,16 @@ final class RegistryTests: XCTestCase {
         do {
             let retrieved: TestClass = try sut.resolve()
             XCTAssertNotNil(retrieved)
-        } catch let error {
+        } catch {
             XCTFail(error.localizedDescription)
         }
+    }
+
+    func testResolveWithOptionalInference() {
+        sut.register(TestClass())
+
+        let retrieved: TestClass? = try? sut.resolve()
+        XCTAssertNotNil(retrieved)
     }
 
     func testResolveWithCustomName() {
@@ -90,7 +97,7 @@ final class RegistryTests: XCTestCase {
         do {
             let retrieved: TestClassParent = try sut.resolve()
             XCTAssertNotNil(retrieved)
-        } catch let error {
+        } catch {
             XCTFail(error.localizedDescription)
         }
     }
