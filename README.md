@@ -1,7 +1,29 @@
 # Registry
-A simple dependency container for Swift.
+A simple container based dependency injection solution for Swift.
 
-### Usage
+## Requirements
+- Xcode 15 (or newer)
+- Swift 5 (or newer)
+
+## Installation
+
+### [Swift Package Manager](https://github.com/apple/swift-package-manager)
+
+To add `Registry` to your Project, from the Xcode menu select:
+
+`File > Swift Packages > Add Package Dependency...`
+
+Enter the URL for the Registry repository: `https://github.com/effzehn/Registry.git`.
+
+When prompted, input a specific version or a range of versions.
+
+Alternatively, if your project has a `Package.swift` (e.g. because it is a Swift Package), you can add Registry directly to your dependencies:
+
+```swift
+.package(url: "https://github.com/effzehn/Registry.git", .upToNextMajor(from: "1.0.2"))
+```
+
+## Usage
 
 It is suggested to start off with the `DependencyContainer`. If necessary, it is possible to implement another `DependencyContainerProtocol` with your own internal logic.
 
@@ -42,5 +64,12 @@ AChildView()
 
 The modifier will use `DependencyContainer.standard` unless another container is specified.
 
-### Documentation
+## Documentation
 Please refer to the inline documentation for additional options and further information.
+
+## Contribution
+Your contributions are appreciated, however please try to keep this component pragmatic and the usage of it simple.
+Feel free to create a pull request of your changes and we'll be happy to review it.
+
+## Licensing
+This project is licensed under the MIT License. See [LICENSE](LICENSE) for more information.
