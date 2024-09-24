@@ -1,5 +1,5 @@
 # Registry
-A simple dependency container for Swift.
+A simple container based dependency injection solution for Swift.
 
 ### Usage
 
